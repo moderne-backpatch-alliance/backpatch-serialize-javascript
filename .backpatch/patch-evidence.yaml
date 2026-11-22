@@ -1,6 +1,6 @@
 schema: osera-patch-evidence/0.1.0
 producer: moderne
-release: 6.0.3-backpatch-00001
+release: 6.0.3-backpatch-00002
 baseline: v6.0.2+backpatch.baseline
 fixes:
   - cve: GHSA-5c6j-r48x-rmvq
@@ -10,12 +10,20 @@ fixes:
     basis: backport
     artifacts:
       - serialize-javascript
-    note: "New in this release; upstream's fix in 7.0.3 (2e609d0, e978a1b). It closes the advisory: Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString()."
+    note: "Carried from 6.0.3-backpatch-00001; upstream's fix in 7.0.3 (2e609d0, e978a1b). It closes the advisory: Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString()."
+  - cve: CVE-2026-34043
+    upstream_fix_url: https://github.com/yahoo/serialize-javascript/commit/f147e90269b58bb6e539cfdf3d0e20d6ad14204b
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-34043
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-serialize-javascript/commit/308617b
+    basis: backport
+    artifacts:
+      - serialize-javascript
+    note: "New in this release; upstream's fix in 7.0.5. It closes the advisory: Serialize JavaScript has CPU Exhaustion Denial of Service via crafted array-like objects."
 tests:
-  commit: 83b94b0dd6e9b5a07afd7b106e7bf47f96e35741
+  commit: 308617b1cfd0cfa3a407c9c018fa59a733a9c78d
   command: npm pack --ignore-scripts, then mocha --reporter tap test/unit in the tested tree with the packed files laid over, each TAP assertion recorded into the JUnit report
   runtime: Node.js v22.16.0, macOS 27.2 arm64
-  report: serialize-javascript-6.0.3-backpatch-00001-tests.zip
-  report_sha256: d90f0093ed023ec303ad80ffb0c2620e86fd2bfb6c7ecd1e6f8752451653e902
+  report: serialize-javascript-6.0.3-backpatch-00002-tests.zip
+  report_sha256: 6e62e364b7c14ac6d1bc3ab619a51a99f21fe6828d96447b948886a06a4d400a
   result: pass
-  note: "upstream's mocha suite (test/unit) on the packed package's files at the tested commit: 81 tests, 81 passed, 0 failed, 0 skipped. The CVE tests (test/unit), with this release's production lines reverted at the tested commit: 81 tests, 79 passed, 2 failed, 0 skipped; with them: 81 tests, 81 passed, 0 failed, 0 skipped. Built with no build step, npm pack --ignore-scripts in a directory named serialize-javascript, 2 of npmjs's 4 files for 6.0.2 are identical; the rest are index.js, package.json. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
+  note: "upstream's mocha suite (test/unit) on the packed package's files at the tested commit: 83 tests, 83 passed, 0 failed, 0 skipped. The CVE tests (test/unit), with this release's production lines reverted at the tested commit: 62 tests, 61 passed, 1 failed, 0 skipped; with them: 83 tests, 83 passed, 0 failed, 0 skipped. Built with no build step, npm pack --ignore-scripts in a directory named serialize-javascript, 2 of npmjs's 4 files for 6.0.2 are identical; the rest are index.js, package.json. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
